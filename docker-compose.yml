@@ -1,0 +1,27 @@
+version: '3'
+services:
+  webapp:
+      image: marcorfilacarreras/padelquest
+      container_name: web
+      ports:
+        - "3000:80"
+      links:
+        - db:db
+      restart: always
+  db:
+    image: mariadb
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: padelquest
+      MYSQL_DATABASE: padelquest
+      MYSQL_USER: padelquest
+      MYSQL_PASSWORD: padelquest
+    volumes:
+      - /opt/docker/padelquest-db:/var/lib/mysql
+      - /opt/docker/padelquest-db-conf:/etc/mysql/conf.d
+    restart: always
+    
+  # INSTRUCTIONS:
+  #  - mysql -h 127.0.0.1 -P 3306 -u root -p
+  #  - GRANT ALL ON padelquest.* to 'padelquest'@'%' IDENTIFIED BY 'padelquest' WITH GRANT OPTION;
+  #  - FLUSH PRIVILEGES;

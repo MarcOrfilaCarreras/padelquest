@@ -1,0 +1,11 @@
+#Folders
+.venv/
+__pycache__/
+instance/
+.pytest_cache
+data
+
+#Files
+*.db
+.dccache
+*.sql

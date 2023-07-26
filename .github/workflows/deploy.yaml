@@ -1,0 +1,28 @@
+name: Deploy
+
+on:
+  workflow_run:
+      workflows: ["Build & Redeploy"]
+      types:
+        - completed
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: self-hosted
+    
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v2
+      
+      - name: Get new Docker Image
+        run: docker pull marcorfilacarreras/padelquest
+        
+      - name: Stop containers
+        run: docker-compose down
+        
+      - name: Start containers
+        run: docker-compose up -d
+      
+      - name: Remove old images
+        run: docker image prune -f
