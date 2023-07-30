@@ -366,15 +366,5 @@ def page_not_found(error):
     return {"status": "fail", "data": {"message": "The requested URL does not exist"}}, 404
 
 
-if __name__ == '__main__':
-    if os.path.isdir("plugins"):
-        for plugin_folder in os.listdir('plugins'):
-            if os.path.isdir(os.path.join('plugins', plugin_folder)):
-                for plugin_file in os.listdir(os.path.join('plugins', plugin_folder)):
-                    if plugin_file == 'entrypoint.py':
-                        # Remove the '.py' extension from plugin_file
-                        plugin_name = plugin_file[:-3]
-                        plugin_module = importlib.import_module(
-                            f'plugins.{plugin_folder}.{plugin_name}')
-                        plugin_module.register_plugin(app)
+if __name__ == "__main__":
     app.run()

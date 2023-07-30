@@ -121,11 +121,15 @@ def register_plugin(app):
 
     :param app: The Flask app instance.
     """
-    app.register_blueprint(plugin_blueprint)
-
-    # Get all the routes from the app and create/update analytics data
-    routes = [rule.rule for rule in app.url_map.iter_rules()
-              if 'static' not in rule.endpoint]
 
     if ENABLED:
+        routes = [rule.rule for rule in app.url_map.iter_rules()
+                  if 'static' not in rule.endpoint]
+        create_analytics(routes)
+
+    app.register_blueprint(plugin_blueprint)
+
+    if ENABLED:
+        routes = [rule.rule for rule in app.url_map.iter_rules()
+                  if 'static' not in rule.endpoint]
         create_analytics(routes)

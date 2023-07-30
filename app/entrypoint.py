@@ -4,7 +4,7 @@ import os
 
 from app import app
 
-if __name__ == "__main__":
+with app.app_context():
     if os.path.isdir("plugins"):
         for plugin_folder in os.listdir('plugins'):
             if os.path.isdir(os.path.join('plugins', plugin_folder)):
@@ -15,4 +15,6 @@ if __name__ == "__main__":
                         plugin_module = importlib.import_module(
                             f'plugins.{plugin_folder}.{plugin_name}')
                         plugin_module.register_plugin(app)
+
+if __name__ == "__main__":
     app.run()
