@@ -11,3 +11,4 @@ images
 .dccache
 *.sql
 *.png
+*.sqlite
