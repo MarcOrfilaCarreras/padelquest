@@ -53,3 +53,4 @@ virtualenv==20.21.0
 webdriver-manager==3.8.5
 Werkzeug==2.2.3
 wsproto==1.2.0
+setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
