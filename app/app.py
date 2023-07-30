@@ -25,6 +25,8 @@ from models.schemas import TournamentBasicSchema
 from models.schemas import TournamentResultSchema
 from models.schemas import TournamentSchema
 from sqlalchemy import func
+from utils.cronJobs import ScheduleCronJob
+from utils.imageDownloader import ImageDownloader
 
 app = Flask(__name__)
 app.config.from_object(Production)
@@ -41,6 +43,10 @@ with app.app_context():
     Extras.update_competitions_last_updated()
 
     Competition.insert_default_competitions()
+
+    image_downloader = ImageDownloader(app.config['IMAGE_FOLDER'])
+    schedule_cron_job = ScheduleCronJob(
+        app.config['IMAGE_FOLDER'], app.config['CRON_MINUTES'])
 
 
 @app.route('/v1')
@@ -148,19 +154,14 @@ def v1CompetitionsPlayerImage(id_competition, id_player):
         Player.competition_id == id_competition, Player.id == id_player).first()
 
     try:
-        response = requests.get(players.image)
-        if (response.status_code == 206) or (response.status_code == 200):
-            image_stream = io.BytesIO(response.content)
+        image_name = f"competition{id_competition}_player{id_player}.png"
+        image_stream = image_downloader.get_image(players.image, image_name)
 
-            headers = {
-                'Content-Type': 'image/png'
-            }
+        headers = {
+            'Content-Type': 'image/png'
+        }
 
-            return make_response(image_stream.getvalue(), headers)
-        else:
-            response = {"status": "fail", "data": {
-                "message": "Image not found"}}, 206
-            return response
+        return make_response(image_stream, headers)
     except:
         response = {"status": "fail", "data": {
             "message": "Image not found"}}, 206
@@ -200,8 +201,8 @@ def v1CompetitionsPlayerTournaments(id_competition, id_player):
 
 @app.route('/v1/competitions/<id_competition>/search')
 def v1CompetitionsSearchName(id_competition):
-    name = username = request.args.get('name', default='Juan', type=str)
-    side_position = username = request.args.get('side', default=None, type=str)
+    name = request.args.get('name', default='Juan', type=str)
+    side_position = request.args.get('side', default=None, type=str)
 
     player_schema = PlayerSchema(many=True)
 
@@ -209,7 +210,7 @@ def v1CompetitionsSearchName(id_competition):
         response = {"status": "fail", "data": {
             "message": "The search was unsuccessful"}}, 206
     else:
-        query = query.filter(Player.name.contains(
+        query = Player.query.filter(Player.name.contains(
             name), Player.competition_id == id_competition)
 
         if side_position:
@@ -343,20 +344,15 @@ def v1CompetitionsTournamentImage(id_competition, id_tournament):
         Tournament.competition_id == id_competition, Tournament.id == id_tournament).first()
 
     try:
-        response = requests.get(tournament.poster)
+        image_name = f"competition{id_competition}_tournament{id_tournament}.png"
+        image_stream = image_downloader.get_image(
+            tournament.poster, image_name)
 
-        if (response.status_code == 200) or (response.status_code == 206):
-            image_stream = io.BytesIO(response.content)
+        headers = {
+            'Content-Type': 'image/png'
+        }
 
-            headers = {
-                'Content-Type': 'image/png'
-            }
-
-            return make_response(image_stream.getvalue(), headers)
-        else:
-            response = {"status": "fail", "data": {
-                "message": "Image not found"}}, 206
-            return response
+        return make_response(image_stream, headers)
     except:
         response = {"status": "fail", "data": {
             "message": "Image not found"}}, 206

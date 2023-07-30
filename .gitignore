@@ -4,8 +4,10 @@ __pycache__/
 instance/
 .pytest_cache
 data
+images
 
 #Files
 *.db
 .dccache
 *.sql
+*.png

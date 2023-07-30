@@ -9,6 +9,9 @@ class Production:
     SQLALCHEMY_ECHO = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
+    IMAGE_FOLDER = './images'
+    CRON_MINUTES = 5
+
 
 class Development:
     # Flask
@@ -19,3 +22,6 @@ class Development:
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://padelquest:root@127.0.0.1:3306/padelquest'
     SQLALCHEMY_ECHO = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+
+    IMAGE_FOLDER = './images'
+    CRON_MINUTES = 5
