@@ -1,6 +1,7 @@
 FROM ubuntu:20.04
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
+    gcc-aarch64-linux-gnu \
     python3-dev \
     python3-pip \
 && rm -rf /var/lib/apt/lists/*
