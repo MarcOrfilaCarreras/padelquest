@@ -103,8 +103,9 @@ def save_analytics(response):
     :return: The response object.
     """
 
-    thread = threading.Thread(
-        target=save_analytics_thread, args=(request.url_rule.rule,))
+    url = request.url_rule.rule if request.url_rule else None
+
+    thread = threading.Thread(target=save_analytics_thread, args=(url,))
     thread.start()
 
     return response
