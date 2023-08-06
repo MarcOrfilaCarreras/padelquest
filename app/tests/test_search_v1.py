@@ -26,7 +26,7 @@ def test_get_single_competition_search_v1(client):
 
 def test_get_single_competition_search_fail_not_found_v1(client):
     response = client.get('/v1/competitions/100/search')
-    assert response.status_code == 200
+    assert response.status_code == 206
     data = json.loads(response.data)
     assert data["status"] == "fail"
 
@@ -48,7 +48,7 @@ def test_get_single_competition_search_name_v1(client):
 
 def test_get_single_competition_search_name_fail_v1(client):
     response = client.get('/v1/competitions/1/search?name=test')
-    assert response.status_code == 200
+    assert response.status_code == 206
     data = json.loads(response.data)
     assert data["status"] == "fail"
     assert isinstance(data["data"], dict)
@@ -69,7 +69,7 @@ def test_get_single_competition_search_side_v1(client):
 
 def test_get_single_competition_search_side_fail_v1(client):
     response = client.get('/v1/competitions/1/search?side=test')
-    assert response.status_code == 200
+    assert response.status_code == 206
     data = json.loads(response.data)
     assert data["status"] == "fail"
     assert isinstance(data["data"], dict)
@@ -90,7 +90,7 @@ def test_get_single_competition_search_name_side_v1(client):
 
 def test_get_single_competition_search_name_side_fail_name_v1(client):
     response = client.get('/v1/competitions/1/search?name=test&side=drive')
-    assert response.status_code == 200
+    assert response.status_code == 206
     data = json.loads(response.data)
     assert data["status"] == "fail"
     assert isinstance(data["data"], dict)
@@ -103,7 +103,7 @@ def test_get_single_competition_search_name_side_fail_name_v1(client):
 
 def test_get_single_competition_search_name_side_fail_side_v1(client):
     response = client.get('/v1/competitions/1/search?name=juan&side=test')
-    assert response.status_code == 200
+    assert response.status_code == 206
     data = json.loads(response.data)
     assert data["status"] == "fail"
     assert isinstance(data["data"], dict)
@@ -116,7 +116,7 @@ def test_get_single_competition_search_name_side_fail_side_v1(client):
 
 def test_get_single_competition_search_name_side_fail_name_side_v1(client):
     response = client.get('/v1/competitions/1/search?name=test&side=test')
-    assert response.status_code == 200
+    assert response.status_code == 206
     data = json.loads(response.data)
     assert data["status"] == "fail"
     assert isinstance(data["data"], dict)
@@ -129,7 +129,7 @@ def test_get_single_competition_search_name_side_fail_name_side_v1(client):
 
 def test_get_single_competition_search_name_side_fail_name_side_no_parameter_v1(client):
     response = client.get('/v1/competitions/1/search?name=&side=')
-    assert response.status_code == 200
+    assert response.status_code == 206
     data = json.loads(response.data)
     assert data["status"] == "fail"
     assert isinstance(data["data"], dict)

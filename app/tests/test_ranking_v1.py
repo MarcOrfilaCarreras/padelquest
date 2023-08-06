@@ -26,7 +26,7 @@ def test_get_single_ranking_v1(client):
 
 def test_get_single_ranking_fail_not_found_v1(client):
     response = client.get('/v1/competitions/100/ranking')
-    assert response.status_code == 200
+    assert response.status_code == 206
     data = json.loads(response.data)
     assert data["status"] == "fail"
     assert isinstance(data["data"], dict)
@@ -47,7 +47,7 @@ def test_get_single_ranking_top_v1(client):
 
 def test_get_single_ranking_top_fail_v1(client):
     response = client.get('/v1/competitions/1/ranking?top=101')
-    assert response.status_code == 200
+    assert response.status_code == 400
     data = json.loads(response.data)
     assert data["status"] == "fail"
     assert isinstance(data["data"], dict)

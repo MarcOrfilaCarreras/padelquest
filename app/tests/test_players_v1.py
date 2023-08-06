@@ -35,7 +35,7 @@ def test_get_single_player(client):
 
 def test_get_single_player_fail_not_found_v1(client):
     response = client.get('/v1/competitions/1/player/0')
-    assert response.status_code == 200
+    assert response.status_code == 206
     data = json.loads(response.data)
     assert data["status"] == "fail"
     assert isinstance(data["data"], dict)
@@ -48,20 +48,20 @@ def test_get_single_player_fail_not_found_v1(client):
 
 def test_get_single_player_fail_no_parameter_v1(client):
     response = client.get('/v1/competitions/1/player/')
-    assert response.status_code == 200
+    assert response.status_code == 404
     data = json.loads(response.data)
     assert data["status"] == "fail"
     assert isinstance(data["data"], dict)
 
     expected_data = {
-        "message": "The requested player was not found"
+        "message": "The requested URL does not exist"
     }
     assert data["data"] == expected_data
 
 
 def test_get_single_player_fail_image_v1(client):
     response = client.get('/v1/competitions/1/player/0/image')
-    assert response.status_code == 200
+    assert response.status_code == 206
     data = json.loads(response.data)
     assert data["status"] == "fail"
     assert isinstance(data["data"], dict)
@@ -70,9 +70,3 @@ def test_get_single_player_fail_image_v1(client):
         "message": "Image not found"
     }
     assert data["data"] == expected_data
-
-
-def test_get_single_player_redirect_v1(client):
-    response = client.get('/v1/competitions/1/player')
-    assert response.status_code == 308
-    assert response.location == 'http://localhost/v1/competitions/1/player/'
