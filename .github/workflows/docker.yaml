@@ -25,5 +25,8 @@ jobs:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASS }}
       
-      - name: Build backend
+      - name: Build latest image
         run: docker buildx build --push -t marcorfilacarreras/padelquest:latest --platform linux/amd64,linux/arm64 .
+
+      - name: Build commit image
+        run: docker buildx build --push -t marcorfilacarreras/padelquest:${GITHUB_SHA::6} --platform linux/amd64,linux/arm64 .
