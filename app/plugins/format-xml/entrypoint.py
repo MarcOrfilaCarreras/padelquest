@@ -21,18 +21,21 @@ def return_xml(response):
     :return: The response object.
     """
 
-    if request.args.get("format") and (request.args.get("format") == "xml"):
-        if response.is_json:
-            data = json.loads(response.get_data(as_text=True))
+    if not (request.args.get("format") and (request.args.get("format") == "xml")):
+        return response
 
-            xml_string = json2xml.Json2xml(
-                data, wrapper="root", pretty=True, attr_type=False).to_xml()
+    if not response.is_json:
+        return response
 
-            # Create a new Response object with the XML content
-            xml_response = Response(xml_string, content_type='application/xml')
+    data = json.loads(response.get_data(as_text=True))
 
-            return xml_response
-    return response
+    xml_string = json2xml.Json2xml(
+        data, wrapper="root", pretty=True, attr_type=False).to_xml()
+
+    # Create a new Response object with the XML content
+    xml_response = Response(xml_string, content_type='application/xml')
+
+    return xml_response
 
 
 def register_plugin(app):

@@ -15,8 +15,10 @@ def v1CompetitionsPlayerId(id_competition, id_player):
     if len(players) == 0:
         response = {"status": "fail", "data": {
             "message": "The requested player was not found"}}, 206
-    else:
-        response = {"status": "success", "data": player_schema.dump(players)}
+
+        return response
+
+    response = {"status": "success", "data": player_schema.dump(players)}
 
     return response
 
@@ -57,17 +59,19 @@ def v1CompetitionsPlayerTournaments(id_competition, id_player):
     if len(tournament_results) == 0:
         response = {"status": "fail", "data": {
             "message": "The tournaments were not found"}}, 206
-    else:
-        data = []
 
-        tournament_schema = TournamentBasicSchema()
+        return response
 
-        for tournament_result in tournament_results:
-            tournaments = Tournament.query.filter(
-                Tournament.id == tournament_result.tournament_id).first()
+    data = []
 
-            data.append(tournament_schema.dump(tournaments))
+    tournament_schema = TournamentBasicSchema()
 
-        response = {"status": "success", "data": data}
+    for tournament_result in tournament_results:
+        tournaments = Tournament.query.filter(
+            Tournament.id == tournament_result.tournament_id).first()
+
+        data.append(tournament_schema.dump(tournaments))
+
+    response = {"status": "success", "data": data}
 
     return response

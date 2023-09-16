@@ -23,9 +23,11 @@ def v1CompetitionsTournaments(id_competition):
     if len(tournaments) == 0:
         response = {"status": "fail", "data": {
             "message": "The tournaments were not found"}}, 206
-    else:
-        response = {"status": "success",
-                    "data": tournament_schema.dump(tournaments)}
+
+        return response
+
+    response = {"status": "success",
+                "data": tournament_schema.dump(tournaments)}
 
     return response
 
@@ -38,42 +40,48 @@ def v1CompetitionsTournament(id_competition, id_tournament):
     if not tournament:
         response = {"status": "fail", "data": {
             "message": "The tournament was not found"}}, 206
-    else:
-        response = {"status": "success",
-                    "data": tournament_schema.dump(tournament)}
+
+        return response
+
+    response = {"status": "success",
+                "data": tournament_schema.dump(tournament)}
 
     return response
 
 
 def v1CompetitionsTournamentsResults(id_competition, id_tournament):
-    if id_competition != "2":
-        round = request.args.get('round', default=None, type=str)
-        court = request.args.get('court', default=None, type=str)
-
-        query = TournamentResults.query.filter(
-            TournamentResults.competition_id == id_competition,
-            TournamentResults.tournament_id == id_tournament
-        )
-
-        if round:
-            query = query.filter(
-                TournamentResults.round == round)
-        if court:
-            query = query.filter(
-                TournamentResults.court == court)
-
-        results = query.all()
-
-        if len(results) == 0:
-            response = {"status": "fail", "data": {
-                "message": "The results were not found"}}, 206
-        else:
-            results_schema = TournamentResultSchema(many=True)
-            response = {"status": "success",
-                        "data": results_schema.dump(results)}
-    else:
+    if id_competition == "2":
         response = {"status": "fail", "data": {
             "message": "This competition does not allow to obtain the results of the matches"}}, 206
+
+        return response
+
+    round = request.args.get('round', default=None, type=str)
+    court = request.args.get('court', default=None, type=str)
+
+    query = TournamentResults.query.filter(
+        TournamentResults.competition_id == id_competition,
+        TournamentResults.tournament_id == id_tournament
+    )
+
+    if round:
+        query = query.filter(
+            TournamentResults.round == round)
+    if court:
+        query = query.filter(
+            TournamentResults.court == court)
+
+    results = query.all()
+
+    if len(results) == 0:
+        response = {"status": "fail", "data": {
+            "message": "The results were not found"}}, 206
+
+        return response
+
+    results_schema = TournamentResultSchema(many=True)
+    response = {"status": "success",
+                "data": results_schema.dump(results)}
 
     return response
 
