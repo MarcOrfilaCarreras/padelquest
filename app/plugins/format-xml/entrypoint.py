@@ -34,6 +34,7 @@ def return_xml(response):
 
     # Create a new Response object with the XML content
     xml_response = Response(xml_string, content_type='application/xml')
+    xml_response.status_code = response.status_code
 
     return xml_response
 
