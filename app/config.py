@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+RAPID_API_URL = "https://padelquest1.p.rapidapi.com"
+
+
 class Production:
     # Flask
     DEBUG = False

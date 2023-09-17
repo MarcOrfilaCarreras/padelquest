@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 
+from config import RAPID_API_URL
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import fields
 
@@ -34,7 +35,7 @@ class PlayerSchema(ma.SQLAlchemySchema):
     birth_date = ma.auto_field()
     birth_place = ma.auto_field()
     height = ma.auto_field()
-    image = ma.auto_field()
+    image = fields.Method("build_url")
 
     ranking = ma.auto_field()
     games = ma.auto_field()
@@ -46,6 +47,12 @@ class PlayerSchema(ma.SQLAlchemySchema):
     teammate_url = ma.auto_field()
 
     competition_id = ma.auto_field()
+
+    def build_url(self, obj):
+        if obj.image:
+            return f"{RAPID_API_URL}/v1/competitions/{obj.competition_id}/player/{obj.id}/image"
+        else:
+            return None
 
 
 class TournamentSchema(ma.SQLAlchemySchema):
