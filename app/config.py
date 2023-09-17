@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-RAPID_API_URL = "https://padelquest1.p.rapidapi.com"
-
 
 class Production:
     # Flask
@@ -15,6 +13,8 @@ class Production:
     IMAGE_FOLDER = './images'
     CRON_MINUTES = 5
 
+    BASE_URL = "https://padelquest1.p.rapidapi.com"
+
 
 class Development:
     # Flask
@@ -28,3 +28,5 @@ class Development:
 
     IMAGE_FOLDER = './images'
     CRON_MINUTES = 5
+
+    BASE_URL = "http://127.0.0.1:5000"

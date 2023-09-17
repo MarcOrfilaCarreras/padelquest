@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 
-from config import RAPID_API_URL
+from flask import current_app
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import fields
 
@@ -35,7 +35,7 @@ class PlayerSchema(ma.SQLAlchemySchema):
     birth_date = ma.auto_field()
     birth_place = ma.auto_field()
     height = ma.auto_field()
-    image = fields.Method("build_url")
+    image = fields.Method("build_image_url")
 
     ranking = ma.auto_field()
     games = ma.auto_field()
@@ -48,9 +48,9 @@ class PlayerSchema(ma.SQLAlchemySchema):
 
     competition_id = ma.auto_field()
 
-    def build_url(self, obj):
+    def build_image_url(self, obj):
         if obj.image:
-            return f"{RAPID_API_URL}/v1/competitions/{obj.competition_id}/player/{obj.id}/image"
+            return f"{current_app.config['BASE_URL']}/v1/competitions/{obj.competition_id}/player/{obj.id}/image"
         else:
             return None
 
@@ -63,7 +63,7 @@ class TournamentSchema(ma.SQLAlchemySchema):
     url = ma.auto_field()
 
     name = ma.auto_field()
-    poster = ma.auto_field()
+    poster = fields.Method("build_poster_url")
 
     start_date = ma.auto_field()
     end_date = ma.auto_field()
@@ -78,6 +78,12 @@ class TournamentSchema(ma.SQLAlchemySchema):
         else:
             return None
 
+    def build_poster_url(self, obj):
+        if obj.poster:
+            return f"{current_app.config['BASE_URL']}/v1/competitions/{obj.competition_id}/tournaments/{obj.id}/image"
+        else:
+            return None
+
 
 class TournamentBasicSchema(ma.SQLAlchemySchema):
     class Meta:
@@ -87,12 +93,18 @@ class TournamentBasicSchema(ma.SQLAlchemySchema):
     url = ma.auto_field()
 
     name = ma.auto_field()
-    poster = ma.auto_field()
+    poster = fields.Method("build_poster_url")
 
     start_date = ma.auto_field()
     end_date = ma.auto_field()
 
     competition_id = ma.auto_field()
+
+    def build_poster_url(self, obj):
+        if obj.poster:
+            return f"{current_app.config['BASE_URL']}/v1/competitions/{obj.competition_id}/tournaments/{obj.id}/image"
+        else:
+            return None
 
 
 class TournamentResultSchema(ma.SQLAlchemySchema):
