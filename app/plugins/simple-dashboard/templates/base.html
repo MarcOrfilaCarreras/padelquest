@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <title>Padelquest</title>
+    <style type="text/css">
+        nav {
+            border-bottom: 1px solid var(--muted-border-color);;
+        }
+
+        nav > ul > li > a {
+            font-size: 16px !important;
+        }
+
+        article {
+            margin-top: 0;
+            padding: 30px;
+        }
+
+        article > h1 {
+            height: auto;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        article > hgroup > h6 {
+            font-size: 16px !important;
+        }
+    </style>
+  </head>
+  <body>
+
+    {% include "components/navigation.html" %}
+
+    <main class="container">
+
+        {% block content %}
+        {% endblock %}
+        
+    </main>
+  </body>
+</html>
