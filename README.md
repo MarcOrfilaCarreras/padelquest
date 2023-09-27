@@ -1,6 +1,6 @@
 <div align="center">
 
-[![License](https://img.shields.io/github/license/MarcOrfilaCarreras/padelquest?style=flat)](https://github.com/MarcOrfilaCarreras/padelquest)
+[![License](https://img.shields.io/github/license/MarcOrfilaCarreras/padelquest?style=flat)](https://github.com/MarcOrfilaCarreras/padelquest) &nbsp; ![Docker](https://img.shields.io/github/actions/workflow/status/MarcOrfilaCarreras/padelquest/docker.yaml?branch=master&label=docker&style=flat) &nbsp; ![Deploy](https://img.shields.io/github/actions/workflow/status/MarcOrfilaCarreras/padelquest/deploy.yaml?branch=master&label=deploy&style=flat)
 
 </div>
 
