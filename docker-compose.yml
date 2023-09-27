@@ -32,6 +32,8 @@ services:
   webapp:
       image: marcorfilacarreras/padelquest
       container_name: web
+      volumes:
+        - /opt/docker/padelquest-grafana:/var/lib/grafana
       links:
         - db:db
       restart: always
