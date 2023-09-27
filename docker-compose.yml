@@ -1,13 +1,41 @@
 version: '3'
 services:
+
+  caddy:
+    image: caddy:2.7.4
+    container_name: caddy
+    ports:
+      - 3000:80
+      - 8019:2019
+    volumes:
+      - ./infra/caddy/Caddyfile:/etc/caddy/Caddyfile
+    links:
+      - webapp:webapp
+    restart: always
+
+  prometheus:
+    image: prom/prometheus:v2.47.0
+    container_name: prometheus
+    volumes:
+      - ./infra/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    restart: always
+
+  grafana:
+    image: grafana/grafana:10.1.2
+    container_name: grafana
+    ports:
+      - 8020:3000
+    links:
+      - prometheus:prometheus
+    restart: always
+
   webapp:
       image: marcorfilacarreras/padelquest
       container_name: web
-      ports:
-        - "3000:80"
       links:
         - db:db
       restart: always
+
   db:
     image: mariadb
     container_name: db
