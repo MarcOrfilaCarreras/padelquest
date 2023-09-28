@@ -18,11 +18,11 @@ jobs:
       - name: Get new Docker Image
         run: docker pull marcorfilacarreras/padelquest
         
-      - name: Stop containers
-        run: docker-compose down
+      - name: Stop API
+        run: docker-compose -f docker-compose.yml down webapp
         
       - name: Start containers
-        run: docker-compose up -d
+        run: docker-compose -f docker-compose.yml up webapp
       
       - name: Remove old images
         run: docker image prune -f

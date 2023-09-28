@@ -25,6 +25,8 @@ services:
     container_name: grafana
     ports:
       - 8020:3000
+    volumes:
+      - /opt/docker/padelquest-grafana:/var/lib/grafana
     links:
       - prometheus:prometheus
     restart: always
@@ -32,8 +34,6 @@ services:
   webapp:
       image: marcorfilacarreras/padelquest
       container_name: web
-      volumes:
-        - /opt/docker/padelquest-grafana:/var/lib/grafana
       links:
         - db:db
       restart: always
