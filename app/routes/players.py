@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
+from flask import current_app
 from flask import make_response
+from flask import request
 from models.models import Player
+from models.models import PlayerRankingHistory
 from models.models import Tournament
 from models.models import TournamentResults
+from models.schemas import PlayerRankingHistorySchema
 from models.schemas import PlayerSchema
 from models.schemas import TournamentBasicSchema
 
@@ -73,5 +77,29 @@ def v1CompetitionsPlayerTournaments(id_competition, id_player):
         data.append(tournament_schema.dump(tournaments))
 
     response = {"status": "success", "data": data}
+
+    return response
+
+
+def v1CompetitionsPlayerRankingHistory(id_competition, id_player):
+    page_size = current_app.config['PAGE_SIZE']
+
+    page = request.args.get('page', default=1, type=int)
+
+    total_pages = (PlayerRankingHistory.query.filter(
+        PlayerRankingHistory.player_id == id_player).count() + page_size - 1) // page_size
+
+    history_schema = PlayerRankingHistorySchema(many=True)
+    history = PlayerRankingHistory.query.filter(PlayerRankingHistory.player_id == id_player).limit(
+        page_size).offset((page - 1) * page_size).all()
+
+    if len(history) == 0:
+        response = {"status": "fail", "data": {
+            "message": "The rankings were not found"}}, 206
+
+        return response
+
+    response = {"status": "success", "data": {"meta": {
+        "page": page, "page_count": total_pages}, "data": history_schema.dump(history)}}
 
     return response

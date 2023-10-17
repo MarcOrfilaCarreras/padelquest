@@ -32,6 +32,7 @@ with app.app_context():
     Extras.update_tournaments_results()
     Extras.normalization_names()
     Extras.update_competitions_last_updated()
+    Extras.insert_player_ranking_history()
 
     Competition.insert_default_competitions()
 
@@ -58,6 +59,8 @@ app.add_url_rule('/v1/competitions/<id_competition>/player/<id_player>/image',
                  view_func=players.v1CompetitionsPlayerImage)
 app.add_url_rule('/v1/competitions/<id_competition>/player/<id_player>/tournaments',
                  view_func=players.v1CompetitionsPlayerTournaments)
+app.add_url_rule('/v1/competitions/<id_competition>/player/<id_player>/ranking',
+                 view_func=players.v1CompetitionsPlayerRankingHistory)
 
 app.add_url_rule('/v1/competitions/<id_competition>/tournaments',
                  view_func=tournaments.v1CompetitionsTournaments)

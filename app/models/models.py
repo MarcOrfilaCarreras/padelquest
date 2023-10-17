@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Boolean
 from sqlalchemy import Column
 from sqlalchemy import Date
+from sqlalchemy import DateTime
 from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
 from sqlalchemy import PrimaryKeyConstraint
@@ -12,6 +13,7 @@ from sqlalchemy import String
 from sqlalchemy import text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
 
 db = SQLAlchemy()
 ma = Marshmallow()
@@ -136,3 +138,16 @@ class TournamentResults(db.Model):
         PrimaryKeyConstraint('url_player1_couple1',
                              'url_player1_couple2', 'round', 'url_tournament'),
     )
+
+
+class PlayerRankingHistory(db.Model):
+    __tablename__ = 'players_ranking_history'
+
+    id = Column(Integer, primary_key=True)
+
+    ranking = Column(Integer)
+    date = Column(DateTime, server_default=func.now())
+
+    player_id = Column(Integer, ForeignKey('players.id'))
+
+    player = relationship('Player')

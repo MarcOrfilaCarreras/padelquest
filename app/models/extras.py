@@ -210,3 +210,15 @@ def update_competitions_last_updated():
 
     db.session.execute(procedure_sql)
     db.session.commit()
+
+
+def insert_player_ranking_history():
+    procedure_sql = text("""
+    CREATE TRIGGER IF NOT EXISTS insert_player_ranking_history
+    AFTER UPDATE ON players
+    FOR EACH ROW BEGIN
+        INSERT INTO players_ranking_history (player_id, ranking) VALUES (NEW.id, OLD.ranking);
+    END
+    """)
+    db.session.execute(procedure_sql)
+    db.session.commit()

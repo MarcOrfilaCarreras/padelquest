@@ -15,6 +15,8 @@ class Production:
 
     BASE_URL = "https://padelquest1.p.rapidapi.com"
 
+    PAGE_SIZE = 10
+
 
 class Development:
     # Flask
@@ -30,3 +32,5 @@ class Development:
     CRON_MINUTES = 5
 
     BASE_URL = "http://127.0.0.1:5000"
+
+    PAGE_SIZE = 10

@@ -8,6 +8,7 @@ from marshmallow import fields
 from .models import Competition
 from .models import ma
 from .models import Player
+from .models import PlayerRankingHistory
 from .models import Tournament
 from .models import TournamentResults
 
@@ -129,3 +130,11 @@ class TournamentResultSchema(ma.SQLAlchemySchema):
     tournament_id = ma.auto_field()
 
     competition_id = ma.auto_field()
+
+
+class PlayerRankingHistorySchema(ma.SQLAlchemySchema):
+    class Meta:
+        model = PlayerRankingHistory
+
+    ranking = ma.auto_field()
+    date = ma.auto_field()
