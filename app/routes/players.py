@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from flask import abort
 from flask import current_app
 from flask import make_response
 from flask import request
@@ -82,16 +83,27 @@ def v1CompetitionsPlayerTournaments(id_competition, id_player):
 
 
 def v1CompetitionsPlayerRankingHistory(id_competition, id_player):
+    history_schema = PlayerRankingHistorySchema(many=True)
     page_size = current_app.config['PAGE_SIZE']
 
     page = request.args.get('page', default=1, type=int)
+    order = request.args.get('order', default="asc", type=str)
+
+    if not (order == "asc" or order == "desc"):
+        abort(400)
 
     total_pages = (PlayerRankingHistory.query.filter(
         PlayerRankingHistory.player_id == id_player).count() + page_size - 1) // page_size
 
-    history_schema = PlayerRankingHistorySchema(many=True)
-    history = PlayerRankingHistory.query.filter(PlayerRankingHistory.player_id == id_player).limit(
-        page_size).offset((page - 1) * page_size).all()
+    if order == "asc":
+        query = PlayerRankingHistory.query.filter(
+            PlayerRankingHistory.player_id == id_player).order_by(PlayerRankingHistory.date.asc())
+
+    if order == "desc":
+        query = PlayerRankingHistory.query.filter(
+            PlayerRankingHistory.player_id == id_player).order_by(PlayerRankingHistory.date.desc())
+
+    history = query.limit(page_size).offset((page - 1) * page_size).all()
 
     if len(history) == 0:
         response = {"status": "fail", "data": {
