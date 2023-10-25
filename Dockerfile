@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:lunar-20231004
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
     gcc-aarch64-linux-gnu \
