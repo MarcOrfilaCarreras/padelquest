@@ -19,6 +19,8 @@
 
 <br>
 
+> **Notice**: This repo has been archived; no further updates will be provided.
+
 ## :information_source: About The Project
 Padelquest is a cutting-edge Python-based API, leveraging the versatile Flask framework, MySQL database, and the powerful SQLAlchemy ORM. Our mission is simple: to provide you with a seamless and intuitive platform to access comprehensive information on the most prestigious padel tournaments and players from around the world.
 
